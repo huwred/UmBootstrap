@@ -1,15 +1,18 @@
 @using UmbNav.Core.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Web.Common.PublishedModels.SiteSettings>
 @using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@* @inject IHttpContextAccessor HttpContextAccessor *@
 @inject Umbraco.Cms.Core.Web.IUmbracoContextFactory UmbracoContextFactory
 
 @{
     Layout = null;
     // all this just to get the current page :(
     var umbracoContext = UmbracoContextFactory.EnsureUmbracoContext();
-    var currentUrl = HttpContextAccessor.HttpContext!.Request.Path.ToString();
-    var currentPage = umbracoContext.UmbracoContext.Content!.GetByRoute(currentUrl);
+    //var currentUrl = HttpContextAccessor.HttpContext!.Request.Path.ToString();
+    //var currentPage = umbracoContext.UmbracoContext.Content!.GetByRoute(currentUrl);
+
+    //use the PublishedContent object, GetByRoute does not work for paths using a urlalias
+    var currentPage = umbracoContext.UmbracoContext.PublishedRequest?.PublishedContent;
 }
 <header class="screen--header sticky-top shadow-b bg-light pb-1">
     <nav class="container-xxl navbar navbar-nav navbar-expand-lg">
